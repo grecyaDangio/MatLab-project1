@@ -1,14 +1,12 @@
-clc
-close all
-test=readtable('train.csv')
+clear;  close;  clc;
+test = readtable('train.csv')
+
 %% scatter plot con due variabili 
-% ciaoooooo
+
 figure(1)
 scatter(test.ws,test.wp1,'x','b');
 title('velocita del vento VS previsione oraria della velocita')
-ylabel('wp1')
-xlabel('ws')
-
+xlabel('ws');  ylabel('wp1')
 
 
 figure(2)
@@ -16,7 +14,6 @@ scatter(test.wd,test.wp1,'x','r');
 title('velocita del vento VS previsione oraria della direzione del vento')
 ylabel('wp1')
 xlabel('wd')
-
 
 figure(3)
 scatter(test.hors,test.wp1,'x','g');
