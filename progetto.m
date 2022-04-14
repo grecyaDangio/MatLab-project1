@@ -20,13 +20,13 @@ xlabel('wd')
 
 figure(3)
 scatter(test.hors,test.wp1,'x','g');
-title('velocita del vento VS Orizzonte temporale della previsione di velocità e direzione del vento a partire dalla mezzanotte')
+title('velocità del vento VS Orizzonte temporale della previsione di velocità e direzione del vento a partire dalla mezzanotte')
 ylabel('wp1')
 xlabel('hors')
 
 
 % prova di stima 
-% 
+
 % phi1 =[ones(length(test.ws),1), test.ws];
 % [theta1,std1]=lscov(phi1, test.wp1);
 % rendimento_ls_affine=phi1*theta1;
