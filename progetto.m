@@ -2,7 +2,7 @@ clc
 close all
 test=readtable('train.csv')
 %% scatter plot con due variabili 
-
+% ciaoooooo
 figure(1)
 scatter(test.ws,test.wp1,'x','b');
 title('velocita del vento VS previsione oraria della velocita')
