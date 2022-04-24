@@ -6,7 +6,7 @@ test = readtable('train.csv');
 %schiribizzinibici
 
 figure(1)
-lin_wp1 = log(test.wp1 ./ (1-test.wp1));
+lin_wp1 = vpa(log(test.wp1 ./ (1-test.wp1)));
 title('velocita del vento VS previsione oraria della velocita')
 scatter(test.ws,test.wp1,'x','b');
 
