@@ -1,5 +1,5 @@
 clear;  close;  clc;
-test = readtable('train.csv')
+test = readtable('train.csv');
 
 %% scatter plot con due variabili 
 
@@ -36,8 +36,8 @@ xlabel('hors')
 
 
 %% prova grafico del vento 
-wd=deg2rad(test.wd)
-z=test.ws.*exp(i.*wd)
+wd=deg2rad(test.wd);
+z=test.ws.*exp(i.*wd);
 figure(4)
 plot(z,'x')
 title('Grafico direzione velocita')
