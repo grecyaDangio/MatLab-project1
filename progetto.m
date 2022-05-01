@@ -11,7 +11,8 @@ N=28116;
 
 %figura 
 figure(1)
-plot3(test.ws,test.wd,test.wp1, 'x')
+plot3(test.ws,test.wd,test.wp1, 'o')
+axis([0 40 0 400 0 3]); 
 grid on
 xlabel('velcovità del vento (ws)')
 ylabel('direzione del vento (wd')
@@ -29,8 +30,8 @@ SSR1= (residui_ls_affine)'*residui_ls_affine;
 RMSE1=sqrt(SSR1/N);
 
 %%
-ws_grid=linspace(0,50,5)';
-wd_grid=linspace(0,300,10)';
+ws_grid=linspace(0,100,20)';
+wd_grid=linspace(0,400,20)';
 [ws_grid_matrice, wd_grid_matrice]=meshgrid(ws_grid,wd_grid);
 
 ws_vett= ws_grid_matrice(:);
