@@ -54,15 +54,7 @@ rendimento_ls_affine2=phi2*theta2;
 residui_ls_affine2= test.wp1-rendimento_ls_affine2 ;
 SSR2= (residui_ls_affine2)'*residui_ls_affine2;
 RMSE2=sqrt(SSR2/N);
-% 
-% phi2 =[ones(length(test.ws),1), test.ws,test.wd, test.ws.^2,test.wd.^2];
-% [theta2]=lscov(phi2, cast_log_wp1);
-% rendimento_ls_affine2=phi2*theta2;
-% residui_ls_affine2= log_wp1-rendimento_ls_affine2 ;
-% SSR2= (residui_ls_affine2)'*residui_ls_affine2;
-% RMSE2=sqrt(SSR2/N);
-% 
-% 
+
 % %prova con modello cubico 
 
 phi3 =[ones(length(test.ws),1), test.ws,test.wd, test.ws.^2,test.wd.^2, test.ws.^3,test.wd.^3, ...
@@ -73,6 +65,16 @@ residui_ls_affine3= test.wp1-rendimento_ls_affine3 ;
 SSR3= (residui_ls_affine3)'*residui_ls_affine3;
 RMSE3=sqrt(SSR3/N);
 
+
+% 
+% phi2 =[ones(length(test.ws),1), test.ws,test.wd, test.ws.^2,test.wd.^2];
+% [theta2]=lscov(phi2, cast_log_wp1);
+% rendimento_ls_affine2=phi2*theta2;
+% residui_ls_affine2= log_wp1-rendimento_ls_affine2 ;
+% SSR2= (residui_ls_affine2)'*residui_ls_affine2;
+% RMSE2=sqrt(SSR2/N);
+% 
+% 
 % phi3 =[ones(length(test.ws),1), test.ws,test.wd, test.ws.^2,test.wd.^2, test.ws.^3,test.wd.^3, ...
 % test.ws.*test.wd, (test.ws.^2).*test.wd, (test.wd.^2).*test.ws];
 % [theta3]=lscov(phi3, cast_log_wp1);
