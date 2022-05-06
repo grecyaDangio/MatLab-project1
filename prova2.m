@@ -1,7 +1,7 @@
 close all; 
 clc; 
 clear;
-turbine = load('clean_dataset.mat');
+turbine =load('clean_dataset.mat');
 dati_grezzi = readtable('train.csv');
 
 figure;
