@@ -4,6 +4,8 @@ clc;
 test = readtable('train.csv');
 
 % clean dataset
+%pulizia dei dati, in quanto 0 e 1 provocavano NaN durante la ricerca del
+%SSR
 cl_wp= test.wp1(test.wp1 > 0 & test.wp1  ~= 1);
 cl_ws= test.ws(test.wp1 > 0 & test.wp1  ~= 1);
 cl_wd= test.wd(test.wp1 > 0 & test.wp1  ~= 1);
@@ -14,7 +16,7 @@ cl_dataset = [cl_wp cl_ws cl_wd cl_wh];
 log_wp1_cl = log(cl_wp ./ (1-cl_wp));
 
 
-%% scatter plot con dati brutti
+%% scatter plot con dati non puliti
 log_wp1 = log(cl_wp ./ (1-cl_wp));
 
 
@@ -91,7 +93,7 @@ zlabel('previsione oraria del vento (wp1)')
 ws_grid=linspace(0,1000,15)';
 wd_grid=linspace(0,1000,360)';
 
- [ws_grid_matrice, wd_grid_matrice]=meshgrid(ws_grid, wd_grid);
+[ws_grid_matrice, wd_grid_matrice]=meshgrid(ws_grid, wd_grid);
 
 ws_vett= ws_grid_matrice(:);
 wd_vett= wd_grid_matrice(:);
