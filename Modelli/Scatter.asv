@@ -37,7 +37,7 @@ xlabel('wind power (wp1)')
 wd=deg2rad(test.wd);
 z=test.ws.*exp(i.*wd);
 figure(6)
-plot(z,'-->','Linewidth',1)
+plot(z,'x', --k','Linewidth',1.4)
 title('Grafico direzione velocita')
 xlabel('Est                                        Ovest')
 ylabel('Sud                                        Nord')
