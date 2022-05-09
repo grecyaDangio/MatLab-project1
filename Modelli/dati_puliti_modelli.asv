@@ -51,21 +51,21 @@ legend("Validation Data", "Estimates");
 
 %Goodness of git (GOF) con dati pultiti
 
-% phi_cubo=[ ones(length(Y_Hat_test), 1),test_data.wp1, test_data.ws, test_data.wp1.^2,test_data.ws.^2, test_data.wp1.^3,test_data.ws.^3, ...
-%     test_data.wp1.*test_data.ws, (test_data.wp1.^2).*test_data.ws, (test_data.ws.^2).*test_data.wp1];
-% 
-% thetaGOF = lscov(phi_cubo,test_data.wp1);
-% figure;
-% scatter(test_data.wp1, Y_Hat_test, '.', 'MarkerFaceAlpha',.55,'MarkerEdgeAlpha',.55);
-% grid on;
-% hold on;
-% plot([0, 1], [0,1], 'LineWidth', 2);
-% plot([0, 1], thetaGOF(1) + thetaGOF(2)*[0,1], 'LineWidth', 2);
-% axis([0, 1, 0, 1]);
-% title('Goodness of fit for Benchmark Model: $P(v) = \theta v^3$', 'Interpreter', 'latex');
-% xlabel('Actual Power [Kw]');
-% ylabel('Estimated Power [kW]');
-% legend("Data vs. Estimates", "$45^{\circ}$ line", "Linear Regression", "Interpreter", 'latex');
+
+thetaGOF = lscov([ ones(length(Y_Hat_test), 1), Y_Hat_test], test_data.wp1, test_data.ws, test_data.wp1.^2,test_data.ws.^2, test_data.wp1.^3,test_data.^3, ...
+    pressione.*giri, (pressione.^2).*giri, (giri.^2).*pressione]);
+
+figure;
+scatter(test_data.wp1, Y_Hat_test, '.', 'MarkerFaceAlpha',.55,'MarkerEdgeAlpha',.55);
+grid on;
+hold on;
+plot([0, 1], [0,1], 'LineWidth', 2);
+plot([0, 1], thetaGOF(1) + thetaGOF(2)*[0,1], 'LineWidth', 2);
+axis([0, 1, 0, 1]);
+title('Goodness of fit for Benchmark Model: $P(v) = \theta v^3$', 'Interpreter', 'latex');
+xlabel('Actual Power [Kw]');
+ylabel('Estimated Power [kW]');
+legend("Data vs. Estimates", "$45^{\circ}$ line", "Linear Regression", "Interpreter", 'latex');
 
 
 benchmarkModel.parameters = theta;
