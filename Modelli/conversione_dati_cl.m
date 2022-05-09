@@ -4,8 +4,7 @@
 % load('logit_data.mat')
 % csvwrite('clean_dataset_logit.csv', train_data)
 
-train= load ('logit_data.mat');
-wp1= train(:,1);
-ws=train(:,2);
+cl_data= load ('../DataSet/dati_puliti_all.mat');
+csvwrite('dati_puliti.csv', train_data_clear)
 
 
