@@ -1,7 +1,7 @@
 clear all;  
 close all;  
 clc;
-test = readtable('train.csv');
+test = readtable('../DataSet/train.csv');
 
 % clean dataset
 %pulizia dei dati, in quanto 0 e 1 provocavano NaN durante la ricerca del
