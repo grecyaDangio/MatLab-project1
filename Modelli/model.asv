@@ -210,32 +210,32 @@ cubicModel_third.NRMSE = sqrt(cubicModel_third.ValidationMSE) / (max(test_data.w
 
 
 %% RETE NEURALE 1 HIDDEN LAYER 1 NEURON (la rete neurale con un neurono coincide con un modello logitico)
-% Y_Hat = multilayerPerceptronNeuralNetwork1(train_data.ws);
-% Y_Hat_validation = multilayerPerceptronNeuralNetwork1(test_data.ws);
-% 
-% figure;
-% scatter(train_data.ws, train_data.wp1, '.');
-% hold on;
-% plot(windspeedGrid, multilayerPerceptronNeuralNetwork1(windspeedGrid'), 'LineWidth', 2);
-% axis([0, 1, 0, 1]);
-% grid on;
-% title('1 Hidden Layer MLPNN, 1 neuron', 'Interpreter', 'latex');
-% xlabel('Wind Speed [m/s]', "Interpreter", 'latex');
-% ylabel('Power [kW]', "Interpreter", 'latex');
-% legend("Training Data", "MLP NN", "Interpreter", 'latex');
-% 
-% 
-% thetaGOF = lscov([ ones(length(Y_Hat_validation), 1), Y_Hat_validation], test_data.wp1);
-% 
-% figure;
-% %subplot(2,1,1);
-% scatter(test_data.wp1, Y_Hat_validation, '.');
-% grid on;
-% hold on;
-% plot([0, 1], [0,1], 'LineWidth', 1.5);
-% plot([0, 1], thetaGOF(1) + thetaGOF(2)*[0,1], 'LineWidth', 1.5);
-% axis([0, 1, 0, 1]);
-% title('Goodness of fit for MultiLayer Perceptron Neural Network', 'Interpreter', 'latex');
-% xlabel('Wind Speed [kW]', "Interpreter", 'latex');
-% ylabel('Estimated Power [kW]', "Interpreter", 'latex');
-% legend("Data vs. Estimates", "$45^{\circ}$ line", "Linear Regression", "Interpreter", 'latex');
+Y_Hat = multilayerPerceptronNeuralNetwork1(train_data.ws);
+Y_Hat_validation = multilayerPerceptronNeuralNetwork1(test_data.ws);
+
+figure;
+scatter(train_data.ws, train_data.wp1, '.');
+hold on;
+plot(windspeedGrid, multilayerPerceptronNeuralNetwork1(windspeedGrid'), 'LineWidth', 2);
+axis([0, 1, 0, 1]);
+grid on;
+title('1 Hidden Layer MLPNN, 1 neuron', 'Interpreter', 'latex');
+xlabel('Wind Speed [m/s]', "Interpreter", 'latex');
+ylabel('Power [kW]', "Interpreter", 'latex');
+legend("Training Data", "MLP NN", "Interpreter", 'latex');
+
+
+thetaGOF = lscov([ ones(length(Y_Hat_validation), 1), Y_Hat_validation], test_data.wp1);
+
+figure;
+subplot(2,1,1);
+scatter(test_data.wp1, Y_Hat_validation, '.');
+grid on;
+hold on;
+plot([0, 1], [0,1], 'LineWidth', 1.5);
+plot([0, 1], thetaGOF(1) + thetaGOF(2)*[0,1], 'LineWidth', 1.5);
+axis([0, 1, 0, 1]);
+title('Goodness of fit for MultiLayer Perceptron Neural Network', 'Interpreter', 'latex');
+xlabel('Wind Speed [kW]', "Interpreter", 'latex');
+ylabel('Estimated Power [kW]', "Interpreter", 'latex');
+legend("Data vs. Estimates", "$45^{\circ}$ line", "Linear Regression", "Interpreter", 'latex');

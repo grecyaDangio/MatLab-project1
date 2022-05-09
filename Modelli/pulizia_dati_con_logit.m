@@ -1,11 +1,9 @@
-clear all;  
+clear;  
 close;  
 clc;
 train = readtable('../DataSet/train.csv');
-train_data= load('logit_nuovo.mat');
+turbina= load ('../DataSet/clean_dataset.mat');
 
-train_data_wp=train_data(:,1);
-train_data_ws=train_data(:,2);
 
 %clean dataset
 %pulizia dei dati, in quanto 0 e 1 provocavano NaN durante la ricerca del
@@ -26,7 +24,7 @@ ws= train.ws(logit_wp1 > -4 & logit_wp1<4);
 % cl_wd= train.wd(logit_wp1 > -3.5 & logit_wp1<3);
 % cl_wh= train.hors(logit_wp1 > -3.5 & logit_wp1<3);
 
-
+train_data = [wp ws];
 
 figure(1)
 scatter(cl_ws_wl,logit_wp1,'.', 'r');
@@ -46,16 +44,15 @@ ylabel('potenza(wp1')
 cutin_windspeed = 1;
 cutout_windspeed = 13;
 
-datainrange = train_data(train_data_wp > cutin_windspeed & train_data.ws <= cutout_windspeed, :);
-[theta, sigma] = lscov(datainrange.train_data_ws.^3, datainrange.train_data_wp);
+datainrange = train_data(train_data.ws > cutin_windspeed & train_data.ws <= cutout_windspeed, :);
+[theta, sigma] = lscov(datainrange.ws.^3, datainrange.wp1);
 Y_Hat = datainrange.ws.^3 * theta;
 % 
 % 
-% %Nella sezione dtri saturazione per completare il modello su tutto l'intervallo di velocità del vento, uso il valore medio delle saturazioni vere e lo applico 
+% %Nella sezione di saturazione per completare il modello su tutto l'intervallo di velocità del vento, uso il valore medio delle saturazioni vere e lo applico 
 % %da quando la curva cubica supera il livello di saturazione
 % 
- saturationValue = 0.9824;
- 
+ saturationValue = mean(train_data(train_data.ws > 13 , :).wp1);
 % 
 % 
 density = 0.01;
@@ -65,7 +62,7 @@ windspeedGrid = [0 : density : 25]';
 % 
 % 
 figure;
-scatter(train_data_ws, train_data_wp, '.', 'MarkerFaceAlpha',.2,'MarkerEdgeAlpha',.2);
+scatter(train_data.ws, train_data.wp1, '.', 'MarkerFaceAlpha',.2,'MarkerEdgeAlpha',.2);
 hold on;
 grid on;
 plot(windspeedGrid, benchmark_model(windspeedGrid, theta, saturationWindspeed, saturationValue), "LineWidth", 2.5);
@@ -76,13 +73,13 @@ legend("Training Data", "Benchmark Model");
 % 
 % %predizione si dati di train 
 % 
-Y_Hat_train = benchmark_model(train_data_ws, theta, saturationWindspeed, saturationValue);
+Y_Hat_train = benchmark_model(train_data.ws, theta, saturationWindspeed, saturationValue);
 % 
 figure;
-scatter(train_data_ws, train_data_wp, '.');
+scatter(train_data.ws, train_data.wp1, '.');
 hold on;
 grid on;
-scatter(train_data_ws, Y_Hat_train, '.');
+scatter(train_data.ws, Y_Hat_train, '.');
 title('Validation for Benchmark Model: $P(v) = \frac{1}{2}\rho Av^3$', 'Interpreter', 'latex');
 xlabel('Wind Speed [m/s]');
 ylabel('Power [kW]');
@@ -91,10 +88,10 @@ legend("Validation Data", "Estimates");
 % 
 % %Goodness of git (GOF)
 % 
-thetaGOF = lscov([ ones(length(Y_Hat_train), 1), Y_Hat_train], train_data_wp);
+thetaGOF = lscov([ ones(length(Y_Hat_train), 1), Y_Hat_train], train_data.wp1);
 % 
 figure;
-scatter(train_data_wp, Y_Hat_train, '.', 'MarkerFaceAlpha',.55,'MarkerEdgeAlpha',.55);
+scatter(train_data.wp1, Y_Hat_train, '.', 'MarkerFaceAlpha',.55,'MarkerEdgeAlpha',.55);
 grid on;
 hold on;
 plot([0, 1], [0,1], 'LineWidth', 2);
@@ -117,10 +114,10 @@ legend("Data vs. Estimates", "$45^{\circ}$ line", "Linear Regression", "Interpre
 % benchmarkModel.AIC = (2*length(theta) / length(Y_Hat)) * log(benchmarkModel.SSR);
 % benchmarkModel.MDL = (log(length(Y_Hat))*length(theta) / length(Y_Hat)) * log(benchmarkModel.SSR);
 % 
-% benchmarkModel.ValidationSSR = sum((train_data(:,1)1 - Y_Hat_train).^2);
+% benchmarkModel.ValidationSSR = sum((train_data.wp1 - Y_Hat_train).^2);
 % benchmarkModel.ValidationMSE = benchmarkModel.ValidationSSR / length(Y_Hat_train);
 % 
-% benchmarkModel.MAE = (sum(abs(train_data(:,1)1 - Y_Hat_train))) / (length(Y_Hat_train));
-% benchmarkModel.WMAPE = sum(abs(train_data(:,1)1 - Y_Hat_train)) / sum(abs(train_data(:,1)1));
-% benchmarkModel.NRMSE = sqrt(benchmarkModel.ValidationMSE) / (max(train_data(:,1)1) - min(train_data(:,1)1));
+% benchmarkModel.MAE = (sum(abs(train_data.wp1 - Y_Hat_train))) / (length(Y_Hat_train));
+% benchmarkModel.WMAPE = sum(abs(train_data.wp1 - Y_Hat_train)) / sum(abs(train_data.wp1));
+% benchmarkModel.NRMSE = sqrt(benchmarkModel.ValidationMSE) / (max(train_data.wp1) - min(train_data.wp1));
 
