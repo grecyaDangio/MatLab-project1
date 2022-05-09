@@ -1,6 +1,3 @@
-
-clear all;
-
 % load('clean_dataset.mat')
 % csvwrite('clean_dataset.csv', cl_dataset)
 % 
@@ -12,6 +9,7 @@ clear all;
 % 
 
 
-validation_data = readtable('../DataSet/validation_data.csv');
-
-validation_data.Properties.VariableNames(1:4) = {'wp1','ws','wd','hors'};
+validation_data = readtable('../DataSet/trai.csv');
+test_data = readtable('../DataSet/dati_puliti_test.csv');
+turbina.Properties.VariableNames(1:4) = {'wp1','ws','wd','hors'};
+test_data.Properties.VariableNames(1:4) = {'wp1','ws','wd','hors'};

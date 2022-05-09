@@ -4,8 +4,9 @@ clc;
 
 turbina= readtable('../DataSet/dati_puliti.csv');
 train_data = readtable('../DataSet/train.csv');
-test_data = readtable('../DataSet/test.csv');
+test_data = readtable('../DataSet/dati_puliti_test.csv');
 turbina.Properties.VariableNames(1:4) = {'wp1','ws','wd','hors'};
+test_data.Properties.VariableNames(1:4) = {'wp1','ws','wd','hors'};
 
 
 cutin_windspeed = 1;
