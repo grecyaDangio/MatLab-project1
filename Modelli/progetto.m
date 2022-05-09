@@ -1,7 +1,7 @@
 clear;  
 close;  
 clc;
-test = readtable('train.csv');
+test = readtable('../DataSet/train.csv');
 
 
 logit_wp1 = vpa(log(test.wp1 ./ (1-test.wp1)));
