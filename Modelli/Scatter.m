@@ -40,7 +40,7 @@ z=train.ws.*exp(i.*wd);
 figure(6)
 plot(z,'-->','Linewidth',1)
 title('Grafico direzione velocita')
-xlabel('Est                                        Ovest')
+xlabel('Ovest                                                        Est')
 ylabel('Sud                                        Nord')
 hold on 
 scatter(0,0, 'r', 'Linewidth', 5)
