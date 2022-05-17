@@ -222,18 +222,15 @@ wp_mat3 = reshape(wp_vec3, size(wd_mat3));
 hold on
 mesh(ws_mat3, wd_mat3, wp_mat3);
 
-%% Modello teorico
-% y = ws; x = wp;
-%chiedere perchè il parametro stimato viene 0.0028 e non circa 2500*pi*1.225
-%perchè rmse sono molto differenti fra identificazione e validazione
-%(0.5*(rA*ws.^3)); %my_fun modello teorico @ parametri che si passano
+%% Modello fisico
 
 %stima LS con dati trasformati
-phith = ws.^3;
-[rA, devrA] = lscov(phith,wpl);
-%antitrasformo
-wpeth = exp(phit*thetat)./(1 + exp(phit*thetat)); 
+phith = 1/2.*ws.^3;
+[rA, devrA] = lscov(phith,wp);
+
+wpeth = 1/2 .* rA .* ws.^3;
 epsilonth = wp - wpeth;
+
 rmseth = sqrt((epsilonth'*epsilonth)/length(wp)); %rmseth = rmse teorico
 figure(10)
 scatter(ws, wp, 'x');
@@ -242,11 +239,12 @@ ylabel('wp');
 hold on
 scatter(ws, wpeth, '.', 'yellow')
 title('modello teorico con identificazione lineare')
-
+xlim([0 12])
+ylim([0 1])
 
 %% rappresentazione dei modelli con logit
 
-figure(3)
+figure(11)
 scatter(ws, wpl, 'x');
 title('scatter dati puliti')
 xlabel('ws filtrato');
@@ -255,6 +253,7 @@ hold on
 scatter(ws, phi*theta, '.', 'yellow');
 scatter(ws, phi2*theta2, '.', 'green');
 scatter(ws, phi3*theta3, '.', 'red');
+
 scatter(ws, phith*rA, '.', 'black');
 %%
 % confrontando rmse (del modello lineare) e rmset (del modello teorico)
@@ -273,30 +272,7 @@ scatter(ws, phith*rA, '.', 'black');
 
 
 
-%%GOF 
 
-%GOF modello lineare 
-% 
- phi_gof = [ones(length(y1), 1), y1];
-[theta_gof] = lscov(phi_gof, wpl);  % dev = deviazione standard
-
-figure(30);
-scatter(y1, wpl, '.', 'MarkerFaceAlpha',.55,'MarkerEdgeAlpha',.55);
-grid on;
-hold on;
-plot([-3, 3], [-3,3], 'LineWidth', 2);
-figure(31)
-plot([-3, 3], theta_gof(1) + theta_gof(2)*[-3,3], 'LineWidth', 2);
-% title('Goodness of fit for Model: $P(v) = \theta_1 v + \theta_2 v^2 + \theta_3 v^3$', 'Interpreter', 'latex');
-% xlabel('Actual Power [kW]', "Interpreter", 'latex');
-% ylabel('Estimated Power [kW]', "Interpreter", 'latex');
-% legend("Data vs. Estimates", "$45^{\circ}$ line", "Regression Line", "Interpreter", 'latex');
-% %GOF modello quadratico
-% %GOF modello cubico
-% %GOF modello trigonometrico 
-% %GOF modello con armoniche 
-% 
-% 
 
 
 
