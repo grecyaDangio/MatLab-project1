@@ -188,6 +188,38 @@ wp_mat2 = reshape(wp_vec2, size(wd_mat2));
 hold on
 mesh(ws_mat2, wd_mat2, wp_mat2);
 
+%% modello trigonometrico con armoniche del 1/2 ordine
+
+phit12 = [ones(length(wpl), 1), ws, cos(wd), sin(wd), cos(wd/2), sin(wd/2)];
+[thetat12, devt12] = lscov(phit12, wpl);  % devt = deviazione standard
+
+% antitrasformo phit * thetat
+wpet2 = exp(phit12*thetat12)./(1 + exp(phit12*thetat12)); % wpet = wp estimated
+epsilont12 = wp - wpet12;
+ssrt12 = epsilont12' * epsilont12;
+rmset12 = sqrt(ssrt12/length(wp));
+figure(8)
+
+scatter3(ws, wd, wp, 'x');
+title('Modello con armoniche 1° e 2° ordine: $P(w_s) = t_1 + t_2 \cdot w_s + t_3 \cdot \cos(w_d) + t_4 \sin(wd) + t_5 \cdot \cos(2 \cdot w_d) + t_6 \sin(2 \cot wd) $', 'Interpreter', 'latex')
+xlabel('ws');
+ylabel('wd');
+zlabel('wp');
+
+% hold on
+% scatter3(ws, wd, wpet, '.', 'green')
+
+ws_grid2 = linspace (0, 14,100)';
+wd_grid2 = linspace(0, 6, 100)';
+[ws_mat2, wd_mat2] = meshgrid(ws_grid2, wd_grid2);
+ws_vec2 = ws_mat2(:);
+wd_vec2 = wd_mat2(:);
+phi_grid2 = [ones(length(ws_vec2), 1), ws_vec2, cos(wd_vec2), sin(wd_vec2), cos(2*wd_vec2), sin(2*wd_vec2)];
+wp_vec_logit2 = phi_grid2 * thetat2;
+wp_vec2 = exp(wp_vec_logit2)./(1 + exp(wp_vec_logit2)); 
+wp_mat2 = reshape(wp_vec2, size(wd_mat2));
+hold on
+mesh(ws_mat2, wd_mat2, wp_mat2);
 
 %% modello trigonometrico con armoniche fino al 6 ordine
 
@@ -225,13 +257,13 @@ mesh(ws_mat3, wd_mat3, wp_mat3);
 %% Modello fisico
 
 %stima LS con dati trasformati
-phith = ws.^3;
-[rA, devrA] = lscov(phith,wpl);
-%antitrasformo
-wpeth = 1/2 * rA * ws.2
-wpeth = exp(phith*rA)./(1 + exp(phith*rA)); 
+phith = 1/2.*ws.^3;
+[rA, devrA] = lscov(phith,wp);
+
+wpeth = rA .* ws.^3;
 epsilonth = wp - wpeth;
-rmseth = sqrt((epsilonth'*ep silonth)/length(wp)); %rmseth = rmse teorico
+
+rmseth = sqrt((epsilonth'*epsilonth)/length(wp)); %rmseth = rmse teorico
 figure(10)
 scatter(ws, wp, 'x');
 xlabel('ws');
@@ -239,11 +271,12 @@ ylabel('wp');
 hold on
 scatter(ws, wpeth, '.', 'yellow')
 title('modello teorico con identificazione lineare')
-
+xlim([0 12])
+ylim([0 1])
 
 %% rappresentazione dei modelli con logit
 
-figure(3)
+figure(11)
 scatter(ws, wpl, 'x');
 title('scatter dati puliti')
 xlabel('ws filtrato');
@@ -252,7 +285,7 @@ hold on
 scatter(ws, phi*theta, '.', 'yellow');
 scatter(ws, phi2*theta2, '.', 'green');
 scatter(ws, phi3*theta3, '.', 'red');
-scatter(ws, phith*rA, '.', 'black');
+
 %%
 % confrontando rmse (del modello lineare) e rmset (del modello teorico)
 % essendo dello stesso ordine vince il modello lineare %%%%%%%%%%%(non è meglio quello trigonometrico che tiene in considerazione un altro parametro e riduce seppur di poco ssr)

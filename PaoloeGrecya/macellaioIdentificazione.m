@@ -188,6 +188,38 @@ wp_mat2 = reshape(wp_vec2, size(wd_mat2));
 hold on
 mesh(ws_mat2, wd_mat2, wp_mat2);
 
+%% modello trigonometrico con armoniche del primo 1/2 ordine
+
+phit12 = [ones(length(wpl), 1), ws, cos(wd), sin(wd), cos(wd/2), sin(wd/2)];
+[thetat12, devt12] = lscov(phit12, wpl);  % devt = deviazione standard
+
+% antitrasformo phit * thetat
+wpet12 = exp(phit12*thetat12)./(1 + exp(phit12*thetat12)); % wpet = wp estimated
+epsilont12 = wp - wpet12;
+ssrt12 = epsilont12' * epsilont12;
+rmset12 = sqrt(ssrt12/length(wp));
+figure(8)
+
+scatter3(ws, wd, wp, 'x');
+title('Modello con armoniche 1° e 1/2° ordine: $P(w_s) = t_1 + t_2 \cdot w_s + t_3 \cdot \cos(w_d) + t_4 \sin(wd) + t_5 \cdot \cos(\frac{w_d}{2}) + t_6 \sin(\frac{wd}{2}) $', 'Interpreter', 'latex')
+xlabel('ws');
+ylabel('wd');
+zlabel('wp');
+
+% hold on
+% scatter3(ws, wd, wpet, '.', 'green')
+
+ws_grid12 = linspace (0, 14,100)';
+wd_grid12 = linspace(0, 6, 100)';
+[ws_mat12, wd_mat12] = meshgrid(ws_grid12, wd_grid12);
+ws_vec12 = ws_mat12(:);
+wd_vec12 = wd_mat12(:);
+phi_grid12 = [ones(length(ws_vec12), 1), ws_vec12, cos(wd_vec12), sin(wd_vec12), cos(wd_vec12/2), sin(wd_vec12/2)];
+wp_vec_logit12 = phi_grid12 * thetat12;
+wp_vec12 = exp(wp_vec_logit12)./(1 + exp(wp_vec_logit12)); 
+wp_mat12 = reshape(wp_vec12, size(wd_mat12));
+hold on
+mesh(ws_mat12, wd_mat12, wp_mat12);
 
 %% modello trigonometrico con armoniche fino al 6 ordine
 
@@ -228,7 +260,7 @@ mesh(ws_mat3, wd_mat3, wp_mat3);
 phith = 1/2.*ws.^3;
 [rA, devrA] = lscov(phith,wp);
 
-wpeth = 1/2 .* rA .* ws.^3;
+wpeth = rA .* ws.^3;
 epsilonth = wp - wpeth;
 
 rmseth = sqrt((epsilonth'*epsilonth)/length(wp)); %rmseth = rmse teorico
@@ -254,7 +286,6 @@ scatter(ws, phi*theta, '.', 'yellow');
 scatter(ws, phi2*theta2, '.', 'green');
 scatter(ws, phi3*theta3, '.', 'red');
 
-scatter(ws, phith*rA, '.', 'black');
 %%
 % confrontando rmse (del modello lineare) e rmset (del modello teorico)
 % essendo dello stesso ordine vince il modello lineare %%%%%%%%%%%(non è meglio quello trigonometrico che tiene in considerazione un altro parametro e riduce seppur di poco ssr)
